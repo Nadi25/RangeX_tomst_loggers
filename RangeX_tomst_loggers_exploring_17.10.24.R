@@ -16,9 +16,6 @@ library(tidyverse)
 
 d <- read.csv2("C:/Users/naart3294/OneDrive - University of Bergen/PhD_RangeX/Data_2024/Climate/TOMST_growing_season_24/High_site/data_94217301_2024_10_17_0.csv")
 
-d
-
-
 head(d)
 
 
@@ -110,7 +107,7 @@ plot_codes_24
 plot_codes_24 <- plot_codes_24 %>% mutate(tomst = as.character(tomst))
 
 # Join all_data with plot_codes_24 based on the tomst columns
-tomst_high <- high_tomst %>%
+tomst_high <- high %>%
   left_join(plot_codes_24, by = c("tomst" = "tomst"))
 
 
@@ -166,7 +163,7 @@ ggplot(high_temperature, aes(x = Date, y = Temp1, color = tomst)) +
   geom_line() +
   labs(title = "Temperature (Temp1) per Logger Over Time",
        x = "Date",
-       y = "Temperature (°C)",
+       y = "Temperature (\u00B0C)", # degreee celsius
        color = "Logger ID") +
   theme_minimal() +
   theme(legend.position = "right")
@@ -189,7 +186,7 @@ ggplot(high_filtered_temperature, aes(x = Date, y = Temp1, color = tomst)) +
   geom_line() +
   labs(title = "Temperature (Temp1) per Logger from 31.05.2024 to 15.10.2024",
        x = "Date",
-       y = "Temperature (°C)",
+       y = "Temperature (\u00B0C)",
        color = "Logger ID") +
   theme_minimal() +
   theme(legend.position = "right")
@@ -208,7 +205,7 @@ ggplot(high_average_temperature, aes(x = Date, y = avg_temp, color = treat)) +
   geom_line() +
   labs(title = "Average Temperature (Temp1) per Treatment from 31.05.2024 to 15.10.2024",
        x = "Date",
-       y = "Average Temperature (°C)",
+       y = "Average Temperature (\u00B0C)",
        color = "Treatment") +
   theme_minimal() +
   theme(legend.position = "right")
@@ -227,20 +224,20 @@ average_temp_time_series <- high_filtered_temperature %>%
 # Create the time series plot for average temperature per treatment group
 high_plot <- ggplot(average_temp_time_series, aes(x = Date, y = avg_temp)) +
   geom_line(data = filter(average_temp_time_series, treat_warming == "warm"),
-            aes(color = "warm"), size = 1) +  # Set color for warm
+            aes(color = "warm"), linewidth = 1) +  # Set color for warm
   geom_line(data = filter(average_temp_time_series, treat_warming == "ambi"),
-            aes(color = "ambi"), size = 1) +  # Set color for ambi
+            aes(color = "ambi"), linewidth = 1) +  # Set color for ambi
   scale_color_manual(values = c("warm" = "red", "ambi" = "blue")) +  # Define colors
   labs(title = "Average Temperature Over Time for Warm and Ambi Treatments",
        x = "Date",
-       y = "Average Temperature (°C)",
+       y = "Average Temperature (\u00B0C)",
        color = "Treatment Group") +
   theme_bw() +
   theme(legend.position = "right")
 
 high_plot
 
-ggsave("high_average_temperature_time_series.png", plot = high_plot, width = 10, height = 6, dpi = 300)
+#ggsave("high_average_temperature_time_series.png", plot = high_plot, width = 10, height = 6, dpi = 300)
 
 
 
